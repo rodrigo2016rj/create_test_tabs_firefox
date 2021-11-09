@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link href="../icones/icone_create_test_tabs_32x32.png" type="image/png" rel="icon">
+    <link href="painel_do_create_test_tabs.css" type="text/css" rel="stylesheet"/>
+    <script src="painel_do_create_test_tabs.js" type="module"></script>
+    <title>Create Test Tabs</title>
+  </head>
+  <body>
+    <header id="header_cabecalho_do_painel">
+      <h1 id="h1_titulo_do_painel">
+        <span>Create Test Tabs</span>
+      </h1>
+    </header>
+    <div id="div_tronco">
+      <div id="div_instrucoes">
+        <p>Instructions:</p>
+        <p>1) Just below these instructions, register a page of your system that has a form.</p>
+        <p>2) In the item of the page you registered, click the "Expand options" button.</p>
+        <p>3) Click the "Create new form input combinations" button to create a form input combination for the registered page.</p>
+        <p>4) One at a time, fill in the names and choose values ​​for your form entries. For each name and value pair, click the "Add" button to add. Entries not added will have an empty value when tabs are created by this addon.</p>
+        <p>5) Repeat steps 3 and 4 for all fill combinations you want to test for the registered page form.</p>
+        <p>6) Click the "Create Test Tabs" button and your browser will open a tab for each combination you create. Each tab will have the fills you set in each combination.</p>
+        <p>7) Now you just need to go to each tab and submit the form to see if the result found will be the same result you expect from your system.</p>
+        <p>Important: This addon is set to fill forms only from URLs that start with: "http://localhost/", "https://localhost/", "http://127.0.0.1/", "https://127.0.0.1/", "http://[::1]/" and "https://[::1]/".</p>
+      </div>
+      <div id="div_formulario_registrar_pagina_mais_lista_de_paginas">
+        <div id="div_formulario_registrar_pagina">
+          <div id="div_textos_do_formulario_registrar_pagina">
+            <span>Pages:</span>
+          </div>
+          <div id="div_label_nome_da_pagina_mais_campo_nome_da_pagina">
+            <div id="div_label_nome_da_pagina">
+              <label id="label_nome_da_pagina" for="campo_nome_da_pagina">
+                <span>Page name:</span>
+              </label>
+              <span id="span_mensagem_do_campo_nome_da_pagina" class="tag_oculta"></span>
+            </div>
+            <div id="div_campo_nome_da_pagina">
+              <input id="campo_nome_da_pagina" name="nome_da_pagina" type="text"/>
+            </div>
+          </div>
+          <div id="div_botao_registrar_pagina">
+            <button id="botao_registrar_pagina" type="button">Register</button>
+          </div>
+          <div id="div_label_endereco_da_pagina_mais_campo_endereco_da_pagina">
+            <div id="div_label_endereco_da_pagina">
+              <label id="label_endereco_da_pagina" for="campo_endereco_da_pagina">
+                <span>Page URL:</span>
+              </label>
+              <span id="span_mensagem_do_campo_endereco_da_pagina" class="tag_oculta"></span>
+            </div>
+            <div id="div_campo_endereco_da_pagina">
+              <input id="campo_endereco_da_pagina" name="endereco_da_pagina" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div id="div_modelo_pagina_registrada" class="div_pagina_registrada tag_oculta">
+          <div id="div_modelo_nome_da_pagina" class="div_nome_da_pagina">
+            <span id="span_modelo_nome_da_pagina" class="span_nome_da_pagina"></span>
+          </div>
+          <div id="div_modelo_botao_remover_pagina" class="div_botao_remover_pagina">
+            <button id="botao_modelo_remover_pagina" class="botao_remover_pagina" 
+                    type="button">Remove</button>
+          </div>
+          <div id="div_modelo_endereco_da_pagina" class="div_endereco_da_pagina">
+            <button id="botao_modelo_create_test_tabs" class="botao_create_test_tabs" 
+                    type="button">Create Test Tabs</button>
+            <a id="link_modelo_endereco_da_pagina" class="link_endereco_da_pagina" target="blank"></a>
+          </div>
+          <div id="div_modelo_botao_expandir_opcoes_da_pagina" 
+               class="div_botao_expandir_opcoes_da_pagina">
+            <button id="botao_modelo_expandir_opcoes_da_pagina" 
+                    class="botao_expandir_opcoes_da_pagina" type="button"></button>
+          </div>
+          <div id="div_modelo_botao_criar_combinacao_mais_lista_de_combinacoes" 
+               class="div_botao_criar_combinacao_mais_lista_de_combinacoes tag_oculta">
+            <div id="div_modelo_botao_criar_combinacao" class="div_botao_criar_combinacao">
+              <button id="botao_modelo_criar_combinacao" class="botao_criar_combinacao" 
+                      type="button">Create new form input combinations</button>
+            </div>
+            <div id="div_modelo_lista_de_combinacoes" class="div_lista_de_combinacoes">
+            </div>
+          </div>
+        </div>
+        <div id="div_modelo_combinacao" class="div_combinacao tag_oculta">
+          <div id="div_modelo_nome_da_combinacao_mais_botao_remover" 
+               class="div_nome_da_combinacao_mais_botao_remover">
+            <div id="div_modelo_nome_da_combinacao" class="div_nome_da_combinacao">
+              <span id="span_modelo_nome_da_combinacao" class="span_nome_da_combinacao"></span>
+            </div>
+            <div id="div_modelo_botao_remover_combinacao" class="div_botao_remover_combinacao">
+              <button id="botao_modelo_remover_combinacao" class="botao_remover_combinacao" 
+                      type="button">Remove</button>
+            </div>
+          </div>
+          <div id="div_modelo_formulario_adicionar_name_e_value" 
+               class="div_formulario_adicionar_name_e_value">
+            <div id="div_modelo_label_name_da_entrada_mais_campo_name_da_entrada" 
+                 class="div_label_name_da_entrada_mais_campo_name_da_entrada">
+              <div id="div_modelo_label_name_da_entrada" class="div_label_name_da_entrada">
+                <label id="label_modelo_name_da_entrada" class="label_name_da_entrada" 
+                       for="campo_modelo_name_da_entrada">
+                  <span>Name:</span>
+                </label>
+                <span id="span_modelo_mensagem_do_campo_name_da_entrada" 
+                      class="span_mensagem_do_campo_name_da_entrada tag_oculta"></span>
+              </div>
+              <div id="div_modelo_campo_name_da_entrada" class="div_campo_name_da_entrada">
+                <input id="campo_modelo_name_da_entrada" class="campo_name_da_entrada" 
+                       name="name_da_entrada" type="text"/>
+              </div>
+            </div>
+            <div id="div_modelo_label_value_da_entrada_mais_campo_value_da_entrada" 
+                 class="div_label_value_da_entrada_mais_campo_value_da_entrada">
+              <div id="div_modelo_label_value_da_entrada" class="div_label_value_da_entrada">
+                <label id="label_modelo_value_da_entrada" class="label_value_da_entrada" 
+                       for="campo_modelo_value_da_entrada">
+                  <span>Value:</span>
+                </label>
+                <span id="span_modelo_mensagem_do_campo_value_da_entrada" 
+                      class="span_mensagem_do_campo_value_da_entrada tag_oculta"></span>
+              </div>
+              <div id="div_modelo_campo_value_da_entrada" class="div_campo_value_da_entrada">
+                <input id="campo_modelo_value_da_entrada" class="campo_value_da_entrada" 
+                       name="value_da_entrada" type="text"/>
+              </div>
+            </div>
+            <div id="div_modelo_botao_adicionar_name_e_value" 
+                 class="div_botao_adicionar_name_e_value">
+              <button id="botao_modelo_adicionar_name_e_value" class="botao_adicionar_name_e_value" 
+                      type="button">Add</button>
+            </div>
+          </div>
+          <div id="div_modelo_texto_da_lista_de_campos" class="div_texto_da_lista_de_campos">
+            <span id="span_modelo_texto_da_lista_de_campos" 
+                  class="span_texto_da_lista_de_campos">Form entries:</span>
+          </div>
+          <div id="div_modelo_lista_de_campos_adicionados" 
+               class="div_lista_de_campos_adicionados"></div>
+        </div>
+        <div id="div_modelo_campo_adicionado" class="div_campo_adicionado tag_oculta">
+          <div id="div_modelo_name_do_campo_adicionado" class="div_name_do_campo_adicionado">
+            <span id="span_modelo_texto_do_name_do_campo_adicionado" 
+                  class="span_texto_do_name_do_campo_adicionado">Name:</span>
+            <span id="span_modelo_valor_do_name_do_campo_adicionado" 
+                  class="span_valor_do_name_do_campo_adicionado"></span>
+          </div>
+          <div id="div_modelo_value_do_campo_adicionado" class="div_value_do_campo_adicionado">
+            <span id="span_modelo_texto_do_value_do_campo_adicionado" 
+                  class="span_texto_do_value_do_campo_adicionado">Value:</span>
+            <span id="span_modelo_valor_do_value_do_campo_adicionado" 
+                  class="span_valor_do_value_do_campo_adicionado"></span>
+          </div>
+        </div>
+        <div id="div_lista_de_paginas">
+        </div>
+      </div>
+    </div>
+    <footer id="footer_rodape_do_painel">
+      <div id="div_informacoes_sobre_o_autor">
+        <p>This addon was made by Rodrigo Diniz da Silva.</p>
+      </div>
+      <div id="div_informacoes_sobre_doacao">
+        <p>If you like this addon and want to reciprocate the author, you can make a donation:</p>
+        <form action="https://www.paypal.com/donate" method="post" target="_top">
+          <input type="hidden" name="hosted_button_id" value="JQJQB9ZTZMM3W" />
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+          <img alt="" border="0" src="https://www.paypal.com/en_BR/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+      </div>
+    </footer>
+    <div id="div_popup" class="tag_oculta">
+      <div id="div_texto_do_popup">
+      </div>
+      <div id="div_botao_ok_do_popup">
+        <button id="botao_ok_do_popup" type="button">Ok</button>
+      </div>
+    </div>
+  </body>
+</html>
