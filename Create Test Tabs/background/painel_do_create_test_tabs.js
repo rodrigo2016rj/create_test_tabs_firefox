@@ -304,6 +304,7 @@ window.addEventListener("load", function(){
   var array_mensagens_das_abas = Array();
   var array_ids_das_abas_que_ja_receberam = Array();
   var endereco_alvo = "";
+  var tentativa_com_disparo_de_evento_update = 0;
   
   function create_test_tabs(evento){
     evento.stopPropagation();
@@ -344,6 +345,7 @@ window.addEventListener("load", function(){
     array_mensagens_das_abas = Array();
     array_ids_das_abas_que_ja_receberam = Array();
     endereco_alvo = pagina_registrada.endereco;
+    tentativa_com_disparo_de_evento_update = 0;
     browser.tabs.onUpdated.removeListener(enviar_mensagem_para_outra_aba);
     browser.tabs.onUpdated.addListener(enviar_mensagem_para_outra_aba);
     criar_aba(pagina_registrada);
@@ -374,7 +376,14 @@ window.addEventListener("load", function(){
               div_texto_do_popup.innerHTML += "<p>https://[::1]/</p>";
             }else{
               console.error("Create Test Tabs - " + erro);
-              div_texto_do_popup.innerHTML = "<p>For some reason, one or more tabs did not receive the form entries filled.</p>";
+              if(tentativa_com_disparo_de_evento_update > 5){
+                return;
+              }
+              tentativa_com_disparo_de_evento_update++;
+              div_texto_do_popup.innerHTML = "<p>For some reason, one or more tabs did not receive the form entries filled. To solve, this addon's script fired an update event for them.</p>";
+              browser.tabs.update(id_da_aba, {url: endereco_alvo}).catch(function(erro){
+                console.error("Create Test Tabs - " + erro);
+              });
             }
             
             var quantidade_rolada = document.documentElement.scrollTop;
