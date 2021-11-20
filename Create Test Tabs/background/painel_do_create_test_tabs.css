@@ -42,6 +42,23 @@ body{
 #div_instrucoes>p:first-child{
   margin-top: 0px;
 }
+#span_expandir_instrucoes{
+  cursor: pointer;
+}
+#span_expandir_instrucoes:hover{
+  color: #3030A0;
+}
+#div_conteudo_das_instrucoes{
+  overflow: hidden;
+}
+.instrucoes_encolhidas{
+  max-height: 0px;
+  transition: max-height 0.5s ease-out;
+}
+.instrucoes_expandidas{
+  max-height: 400px;
+  transition: max-height 0.5s ease-in;
+}
 #div_formulario_registrar_pagina_mais_lista_de_paginas{
   margin-top: 20px;
   border-top: 1px solid #8080A0;

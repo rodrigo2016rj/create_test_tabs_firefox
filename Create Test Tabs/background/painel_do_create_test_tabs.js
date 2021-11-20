@@ -25,8 +25,30 @@ window.addEventListener("load", function(){
 	});
   
   /* Definindo alguns valores */
+  var frase_ocultar_instrucoes = "▼ Instructions:";
+  var frase_expandir_instrucoes = "► Instructions:";
   var frase_ocultar_opcoes = "▼ ▼ ▼ Hide options ▼ ▼ ▼";
   var frase_expandir_opcoes = "► ► ► Expand options ◄ ◄ ◄";
+  
+  /* Comportamento do span_expandir_instrucoes */
+  var span_expandir_instrucoes = document.getElementById("span_expandir_instrucoes");
+  var div_conteudo_das_instrucoes = document.getElementById("div_conteudo_das_instrucoes");
+  
+  span_expandir_instrucoes.innerText = frase_ocultar_instrucoes;
+  
+  span_expandir_instrucoes.addEventListener("click", function(){
+    if(div_conteudo_das_instrucoes.classList.contains("instrucoes_encolhidas")){
+      div_conteudo_das_instrucoes.classList.remove("instrucoes_encolhidas");
+      div_conteudo_das_instrucoes.classList.add("instrucoes_expandidas");
+      span_expandir_instrucoes.innerText = frase_ocultar_instrucoes;
+    }else{
+      div_conteudo_das_instrucoes.classList.remove("instrucoes_expandidas");
+      div_conteudo_das_instrucoes.classList.add("instrucoes_encolhidas");
+      setTimeout(function(){
+        span_expandir_instrucoes.innerText = frase_expandir_instrucoes;
+      }, 350);
+    }
+  });
   
   /* Recuperando as páginas que já haviam sido registradas */
   var paginas_registradas = null;
