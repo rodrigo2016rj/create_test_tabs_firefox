@@ -1,29 +1,4 @@
 window.addEventListener("load", function(){
-  /* Comportamento do popup */
-  var div_popup = document.getElementById("div_popup");
-  var div_texto_do_popup = document.getElementById("div_texto_do_popup");
-  var botao_ok_do_popup = document.getElementById("botao_ok_do_popup");
-  
-  var ocultar_div_popup = true;
-  
-  div_popup.addEventListener("click", function(){
-    ocultar_div_popup = false;
-	});
-  
-  botao_ok_do_popup.addEventListener("click", function(evento){
-    evento.stopPropagation();
-    div_popup.classList.add("tag_oculta");
-    ocultar_div_popup = true;
-	});
-  
-  document.addEventListener("click", function(){
-    if(ocultar_div_popup){
-      div_popup.classList.add("tag_oculta");
-    }else{
-      ocultar_div_popup = true;
-    }
-	});
-  
   /* Definindo alguns valores */
   var frase_ocultar_instrucoes = "▼ Instructions:";
   var frase_expandir_instrucoes = "► Instructions:";
@@ -70,8 +45,8 @@ window.addEventListener("load", function(){
   });
   
   /* Comportamento do formulário que registra uma página */
-  var campo_nome_da_pagina = document.getElementById("campo_nome_da_pagina");
   var span_mensagem_do_campo_nome_da_pagina = document.getElementById("span_mensagem_do_campo_nome_da_pagina");
+  var campo_nome_da_pagina = document.getElementById("campo_nome_da_pagina");
   var botao_registrar_pagina = document.getElementById("botao_registrar_pagina");
   var span_mensagem_do_campo_endereco_da_pagina = document.getElementById("span_mensagem_do_campo_endereco_da_pagina");
   var campo_endereco_da_pagina = document.getElementById("campo_endereco_da_pagina");
@@ -167,16 +142,153 @@ window.addEventListener("load", function(){
     atualizar_lista_de_paginas(paginas_registradas);
   });
   
+  /* Comportamento dos popups */
+  var popups = document.getElementsByClassName("popup");
+  var div_popup = document.getElementById("div_popup");
+  var div_texto_do_popup = document.getElementById("div_texto_do_popup");
+  var botao_ok_do_popup = document.getElementById("botao_ok_do_popup");
+  
+  var div_popup_editar_pagina_registrada = document.getElementById("div_popup_editar_pagina_registrada");
+  var span_mensagem_do_campo_nome_da_pagina_registrada = document.getElementById("span_mensagem_do_campo_nome_da_pagina_registrada");
+  var campo_nome_da_pagina_registrada = document.getElementById("campo_nome_da_pagina_registrada");
+  var botao_editar_pagina_registrada = document.getElementById("botao_editar_pagina_registrada");
+  var span_mensagem_do_campo_endereco_da_pagina_registrada = document.getElementById("span_mensagem_do_campo_endereco_da_pagina_registrada");
+  var campo_endereco_da_pagina_registrada = document.getElementById("campo_endereco_da_pagina_registrada");
+  
+  var numero_da_pagina_registrada_para_editar = null;
+  var backup_do_nome_da_pagina_registrada_para_editar = "";
+  var backup_do_endereco_da_pagina_registrada_para_editar = "";
+  
+  campo_nome_da_pagina_registrada.addEventListener("keyup", function(){
+    if(campo_nome_da_pagina_registrada.value !== backup_do_nome_da_pagina_registrada_para_editar){
+      span_mensagem_do_campo_nome_da_pagina_registrada.classList.add("tag_oculta");
+      backup_do_nome_da_pagina_registrada_para_editar = campo_nome_da_pagina_registrada.value;
+    }
+  });
+  campo_endereco_da_pagina_registrada.addEventListener("keyup", function(){
+    if(campo_endereco_da_pagina_registrada.value !== backup_do_endereco_da_pagina_registrada_para_editar){
+      span_mensagem_do_campo_endereco_da_pagina_registrada.classList.add("tag_oculta");
+      backup_do_endereco_da_pagina_registrada_para_editar = campo_endereco_da_pagina_registrada.value;
+    }
+  });
+  
+  var ocultar_popup = true;
+  
+  for(var i = 0; i < popups.length; i++){
+    popups[i].addEventListener("click", function(){
+      ocultar_popup = false;
+    });
+  }
+  
+  botao_ok_do_popup.addEventListener("click", function(evento){
+    evento.stopPropagation();
+    div_popup.classList.add("tag_oculta");
+    ocultar_popup = true;
+  });
+  
+  botao_editar_pagina_registrada.addEventListener("click", function(evento){
+    evento.stopPropagation();
+    
+    if(paginas_registradas === null){
+      return;
+    }
+    
+    var pagina_registrada = paginas_registradas[numero_da_pagina_registrada_para_editar];
+    
+    var quantidade_de_campos_vazios = 0;
+    
+    var nome_da_pagina_registrada = campo_nome_da_pagina_registrada.value.trim();
+    campo_nome_da_pagina_registrada.value = nome_da_pagina_registrada;
+    if(nome_da_pagina_registrada === ""){
+      span_mensagem_do_campo_nome_da_pagina_registrada.classList.remove("tag_oculta");
+      span_mensagem_do_campo_nome_da_pagina_registrada.innerText = "Required";
+      quantidade_de_campos_vazios++;
+    }
+    
+    var endereco_da_pagina_registrada = campo_endereco_da_pagina_registrada.value.trim();
+    campo_endereco_da_pagina_registrada.value = endereco_da_pagina_registrada;
+    if(endereco_da_pagina_registrada === ""){
+      span_mensagem_do_campo_endereco_da_pagina_registrada.classList.remove("tag_oculta");
+      span_mensagem_do_campo_endereco_da_pagina_registrada.innerText = "Required";
+      quantidade_de_campos_vazios++;
+    }
+    
+    if(quantidade_de_campos_vazios > 0){
+      return;
+    }
+    
+    var quantidade_de_informacao_repetida = 0;
+    for(var i = 0; i < paginas_registradas.length; i++){
+      if(nome_da_pagina_registrada.toLowerCase() === paginas_registradas[i].nome.toLowerCase()
+         && i !== numero_da_pagina_registrada_para_editar){
+        span_mensagem_do_campo_nome_da_pagina_registrada.classList.remove("tag_oculta");
+        span_mensagem_do_campo_nome_da_pagina_registrada.innerText = "This name has already been registered";
+        quantidade_de_informacao_repetida++;
+      }
+      
+      if(endereco_da_pagina_registrada.toLowerCase() === paginas_registradas[i].endereco.toLowerCase()
+         && i !== numero_da_pagina_registrada_para_editar){
+        span_mensagem_do_campo_endereco_da_pagina_registrada.classList.remove("tag_oculta");
+        span_mensagem_do_campo_endereco_da_pagina_registrada.innerText = "This url has already been registered";
+        quantidade_de_informacao_repetida++;
+      }
+      
+      if(quantidade_de_informacao_repetida == 2){
+        break;
+      }
+    }
+    
+    if(quantidade_de_informacao_repetida > 0){
+      return;
+    }
+    
+    if(nome_da_pagina_registrada.length > 36){
+      span_mensagem_do_campo_nome_da_pagina_registrada.classList.remove("tag_oculta");
+      span_mensagem_do_campo_nome_da_pagina_registrada.innerText = "Max length 36 chars, you typed " + nome_da_pagina_registrada.length;
+      return;
+    }
+    
+    if(endereco_da_pagina_registrada.length > 600){
+      span_mensagem_do_campo_endereco_da_pagina_registrada.classList.remove("tag_oculta");
+      span_mensagem_do_campo_endereco_da_pagina_registrada.innerText = "Max length 600 chars, you typed " + endereco_da_pagina_registrada.length;
+      return;
+    }
+    
+    pagina_registrada.nome = nome_da_pagina_registrada;
+    pagina_registrada.endereco = endereco_da_pagina_registrada;
+    
+    backup_do_nome_da_pagina_registrada_para_editar = nome_da_pagina_registrada;
+    backup_do_endereco_da_pagina_registrada_para_editar = endereco_da_pagina_registrada;
+    
+    browser.storage.local.set({paginas_registradas: paginas_registradas});
+    atualizar_lista_de_paginas(paginas_registradas);
+    
+    div_popup_editar_pagina_registrada.classList.add("tag_oculta");
+    ocultar_popup = true;
+  });
+  
+  document.addEventListener("click", function(){
+    if(ocultar_popup){
+      ocultar_todos_os_popups();
+    }else{
+      ocultar_popup = true;
+    }
+  });
+  
+  function ocultar_todos_os_popups(){
+    ocultar_popup = true;
+    for(var i = 0; i < popups.length; i++){
+      popups[i].classList.add("tag_oculta");
+    }
+  }
+  
   /* Comportamento da lista de páginas registradas */
   var div_modelo_pagina_registrada = document.getElementById("div_modelo_pagina_registrada");
   var span_modelo_nome_da_pagina = document.getElementById("span_modelo_nome_da_pagina");
   var link_modelo_endereco_da_pagina = document.getElementById("link_modelo_endereco_da_pagina");
-  var botao_modelo_remover_pagina = document.getElementById("botao_modelo_remover_pagina");
-  var botao_modelo_create_test_tabs = document.getElementById("botao_modelo_create_test_tabs");
-  var botao_modelo_expandir_opcoes_da_pagina = document.getElementById("botao_modelo_expandir_opcoes_da_pagina");
-  var div_lista_de_paginas = document.getElementById("div_lista_de_paginas");
   var div_modelo_combinacao = document.getElementById("div_modelo_combinacao");
   var div_modelo_campo_adicionado = document.getElementById("div_modelo_campo_adicionado");
+  var div_lista_de_paginas = document.getElementById("div_lista_de_paginas");
   
   function atualizar_lista_de_paginas(paginas_registradas){
     div_lista_de_paginas.innerHTML = "";
@@ -211,8 +323,11 @@ window.addEventListener("load", function(){
           }
           tags_do_novo_elemento[j].removeEventListener("click", expandir_ou_ocultar_opcoes_da_pagina);
           tags_do_novo_elemento[j].addEventListener("click", expandir_ou_ocultar_opcoes_da_pagina);
-        }else if(tags_do_novo_elemento[j].id === "div_modelo_botao_criar_combinacao_mais_lista_de_combinacoes" && paginas_registradas[i].expandir_opcoes){
+        }else if(tags_do_novo_elemento[j].id === "div_modelo_opcoes_da_pagina_mais_lista_de_combinacoes" && paginas_registradas[i].expandir_opcoes){
           tags_do_novo_elemento[j].classList.remove("tag_oculta");
+        }else if(tags_do_novo_elemento[j].id === "botao_modelo_editar_pagina"){
+          tags_do_novo_elemento[j].removeEventListener("click", mostrar_popup_editar_pagina);
+          tags_do_novo_elemento[j].addEventListener("click", mostrar_popup_editar_pagina);
         }else if(tags_do_novo_elemento[j].id === "botao_modelo_criar_combinacao"){
           tags_do_novo_elemento[j].removeEventListener("click", criar_combinacao);
           tags_do_novo_elemento[j].addEventListener("click", criar_combinacao);
@@ -330,6 +445,7 @@ window.addEventListener("load", function(){
   
   function create_test_tabs(evento){
     evento.stopPropagation();
+    ocultar_todos_os_popups();
     
     if(paginas_registradas === null){
       return;
@@ -465,17 +581,56 @@ window.addEventListener("load", function(){
     
     var pagina_registrada = paginas_registradas[posicao_no_array];
     
-    var div_botao_criar_combinacao_mais_lista_de_combinacoes = document.getElementById("div_botao_criar_combinacao_mais_lista_de_combinacoes_" + posicao_no_array);
-    if(div_botao_criar_combinacao_mais_lista_de_combinacoes.classList.contains("tag_oculta")){
-      div_botao_criar_combinacao_mais_lista_de_combinacoes.classList.remove("tag_oculta");
+    var div_opcoes_da_pagina_mais_lista_de_combinacoes = document.getElementById("div_opcoes_da_pagina_mais_lista_de_combinacoes_" + posicao_no_array);
+    if(div_opcoes_da_pagina_mais_lista_de_combinacoes.classList.contains("tag_oculta")){
+      div_opcoes_da_pagina_mais_lista_de_combinacoes.classList.remove("tag_oculta");
       tag_que_disparou_o_evento.innerText = frase_ocultar_opcoes;
       pagina_registrada.expandir_opcoes = true;
     }else{
-      div_botao_criar_combinacao_mais_lista_de_combinacoes.classList.add("tag_oculta");
+      div_opcoes_da_pagina_mais_lista_de_combinacoes.classList.add("tag_oculta");
       tag_que_disparou_o_evento.innerText = frase_expandir_opcoes;
       pagina_registrada.expandir_opcoes = false;
     }
     browser.storage.local.set({paginas_registradas: paginas_registradas});
+  }
+  
+  function mostrar_popup_editar_pagina(evento){
+    evento.stopPropagation();
+    ocultar_todos_os_popups();
+    
+    if(paginas_registradas === null){
+      return;
+    }
+    
+    var tag_que_disparou_o_evento = evento.currentTarget;
+    var id_desta_tag = tag_que_disparou_o_evento.id;
+    var posicao_no_array = id_desta_tag.replace("botao_editar_pagina_", "");
+    posicao_no_array = parseInt(posicao_no_array, 10);
+    
+    numero_da_pagina_registrada_para_editar = posicao_no_array;
+    
+    var pagina_registrada = paginas_registradas[posicao_no_array];
+    campo_nome_da_pagina_registrada.value = pagina_registrada.nome;
+    campo_endereco_da_pagina_registrada.value = pagina_registrada.endereco;
+    
+    span_mensagem_do_campo_nome_da_pagina_registrada.classList.add("tag_oculta");
+    span_mensagem_do_campo_endereco_da_pagina_registrada.classList.add("tag_oculta");
+    
+    div_popup_editar_pagina_registrada.classList.remove("tag_oculta");
+    
+    var quantidade_rolada = document.documentElement.scrollTop;
+    var altura_que_esta_sendo_visualizada = window.innerHeight;
+    var estilo_computado = window.getComputedStyle(div_popup_editar_pagina_registrada);
+    var altura = 0;
+    altura += parseInt(estilo_computado.marginTop, 10);
+    altura += parseInt(estilo_computado.marginBottom, 10);
+    altura += parseInt(estilo_computado.borderTopWidth, 10);
+    altura += parseInt(estilo_computado.borderBottomWidth, 10);
+    altura += parseInt(estilo_computado.paddingTop, 10);
+    altura += parseInt(estilo_computado.paddingBottom, 10);
+    altura += parseInt(estilo_computado.height, 10);
+    var posicao_y = quantidade_rolada + altura_que_esta_sendo_visualizada / 2 - altura / 2;
+    div_popup_editar_pagina_registrada.style.top = posicao_y + "px";
   }
   
   function criar_combinacao(evento){

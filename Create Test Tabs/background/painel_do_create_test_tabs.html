@@ -78,9 +78,11 @@
             <button id="botao_modelo_expandir_opcoes_da_pagina" 
                     class="botao_expandir_opcoes_da_pagina" type="button"></button>
           </div>
-          <div id="div_modelo_botao_criar_combinacao_mais_lista_de_combinacoes" 
-               class="div_botao_criar_combinacao_mais_lista_de_combinacoes tag_oculta">
-            <div id="div_modelo_botao_criar_combinacao" class="div_botao_criar_combinacao">
+          <div id="div_modelo_opcoes_da_pagina_mais_lista_de_combinacoes" 
+               class="div_opcoes_da_pagina_mais_lista_de_combinacoes tag_oculta">
+            <div id="div_modelo_opcoes_da_pagina" class="div_opcoes_da_pagina">
+              <button id="botao_modelo_editar_pagina" class="botao_editar_pagina" 
+                      type="button">Edit this page</button>
               <button id="botao_modelo_criar_combinacao" class="botao_criar_combinacao" 
                       type="button">Create new form input combinations</button>
             </div>
@@ -169,17 +171,54 @@
       <div id="div_informacoes_sobre_doacao">
         <p>If you like this addon and want to reciprocate the author, you can make a donation:</p>
         <form action="https://www.paypal.com/donate" method="post" target="_top">
-          <input type="hidden" name="hosted_button_id" value="JQJQB9ZTZMM3W" />
-          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-          <img alt="" border="0" src="https://www.paypal.com/en_BR/i/scr/pixel.gif" width="1" height="1" />
+          <input type="hidden" name="hosted_button_id" value="JQJQB9ZTZMM3W"/>
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" 
+                 name="submit" title="PayPal - The safer, easier way to pay online!" 
+                 alt="Donate with PayPal button"/>
+          <img alt="" border="0" src="https://www.paypal.com/pt_BR/i/scr/pixel.gif" 
+               width="1" height="1"/>
         </form>
       </div>
     </footer>
-    <div id="div_popup" class="tag_oculta">
+    <div id="div_popup" class="popup tag_oculta">
       <div id="div_texto_do_popup">
       </div>
       <div id="div_botao_ok_do_popup">
         <button id="botao_ok_do_popup" type="button">Ok</button>
+      </div>
+    </div>
+    <div id="div_popup_editar_pagina_registrada" class="popup tag_oculta">
+      <div id="div_textos_do_formulario_editar_pagina_registrada">
+        <span>Edit registered page:</span>
+      </div>
+      <div id="div_label_nome_da_pagina_registrada_mais_campo_nome_da_pagina_registrada">
+        <div id="div_label_nome_da_pagina_registrada">
+          <label id="label_nome_da_pagina_registrada" for="campo_nome_da_pagina_registrada">
+            <span>Page name:</span>
+          </label>
+          <span id="span_mensagem_do_campo_nome_da_pagina_registrada" class="tag_oculta"></span>
+        </div>
+        <div id="div_campo_nome_da_pagina_registrada">
+          <input id="campo_nome_da_pagina_registrada" name="nome_da_pagina_registrada" 
+                 type="text"/>
+        </div>
+      </div>
+      <div id="div_botao_editar_pagina_registrada">
+        <button id="botao_editar_pagina_registrada" type="button">Edit</button>
+      </div>
+      <div id="div_label_endereco_da_pagina_registrada_mais_campo_endereco_da_pagina_registrada">
+        <div id="div_label_endereco_da_pagina_registrada">
+          <label id="label_endereco_da_pagina_registrada" 
+                 for="campo_endereco_da_pagina_registrada">
+            <span>Page URL:</span>
+          </label>
+          <span id="span_mensagem_do_campo_endereco_da_pagina_registrada" 
+                class="tag_oculta"></span>
+        </div>
+        <div id="div_campo_endereco_da_pagina_registrada">
+          <input id="campo_endereco_da_pagina_registrada" name="endereco_da_pagina_registrada" 
+                 type="text"/>
+        </div>
       </div>
     </div>
   </body>

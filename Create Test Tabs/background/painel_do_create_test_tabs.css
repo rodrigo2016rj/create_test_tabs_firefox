@@ -146,6 +146,9 @@ body{
   max-width: calc(100% - 5px - 5px - 72px);
   background-color: #6060A0;
   color: #FFF;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .span_nome_da_pagina{
   font-size: 11pt;
@@ -213,14 +216,24 @@ body{
   background-color: #F0F0FF;
   color: #404080;
 }
-.div_botao_criar_combinacao_mais_lista_de_combinacoes{
+.div_opcoes_da_pagina_mais_lista_de_combinacoes{
   float: left;
   padding: 10px 0px;
   min-width: 100%;
   max-width: 100%;
 }
-.div_botao_criar_combinacao{
+.div_opcoes_da_pagina{
   text-align: center;
+}
+.botao_editar_pagina{
+  border: 1px solid #6060A0;
+  background-color: #F8F4E8;
+  color: #6060A0;
+}
+.botao_editar_pagina:hover{
+  border: 1px solid #404080;
+  background-color: #F0F0FF;
+  color: #404080;
 }
 .botao_criar_combinacao{
   border: 1px solid #6060A0;
@@ -386,19 +399,23 @@ body{
   text-indent: 40px;
 }
 
-/* Popup */
-#div_popup{
+/* Popups */
+.popup{
   position: absolute;
   /* top deixo para o script */
+  border-radius: 8px;
+  background-color: #FFF;
+  box-shadow: 4px 4px 4px 1px #C8C8C8;
+}
+
+/* Popup genérico */
+#div_popup{
+  border: 1px solid #E0E0E0;
   margin-right: calc(50% - 400px / 2);
   margin-left: calc(50% - 400px / 2);
-  border: 1px solid #E0E0E0;
-  border-radius: 8px;
   padding: 22px;
   min-width: calc(400px - 2px - 44px);
   max-width: calc(400px - 2px - 44px);
-  background-color: #FFF;
-  box-shadow: 4px 4px 4px 1px #C8C8C8;
 }
 #div_texto_do_popup{
   max-height: 250px;
@@ -427,6 +444,73 @@ body{
   border: 1px solid #484880;
   background-color: #484880;
   color: #FFF;
+}
+
+/* Popup para editar página registrada */
+#div_popup_editar_pagina_registrada{
+  border: 1px solid #E0E0E0;
+  margin-right: calc(50% - 800px / 2);
+  margin-left: calc(50% - 800px / 2);
+  padding: 22px;
+  min-width: calc(800px - 2px - 44px);
+  max-width: calc(800px - 2px - 44px);
+  overflow: hidden;
+}
+#div_label_nome_da_pagina_registrada_mais_campo_nome_da_pagina_registrada{
+  float: left;
+  margin-top: 20px;
+  min-width: 86%;
+  max-width: 86%;
+  min-height: 58px;
+}
+#label_nome_da_pagina_registrada{
+  color: #505050;
+  font-size: 11pt;
+}
+#span_mensagem_do_campo_nome_da_pagina_registrada{
+  margin-top: 20px;
+  color: #F00000;
+  font-size: 11pt;
+}
+#div_campo_nome_da_pagina_registrada{
+  margin-top: 1px;
+}
+#campo_nome_da_pagina_registrada{
+  width: calc(100% - 2px - 10px);
+}
+#div_botao_editar_pagina_registrada{
+  float: left;
+  margin-top: 20px;
+  padding-top: 20px;
+  min-width: 14%;
+  max-width: 14%;
+  min-height: calc(58px - 20px);
+  text-align: right;
+}
+#botao_editar_pagina_registrada{
+  padding: 0px 30px;
+}
+#div_label_endereco_da_pagina_registrada_mais_campo_endereco_da_pagina_registrada{
+  float: left;
+  margin-top: 10px;
+  min-width: calc(100% - 1px);
+  max-width: calc(100% - 1px);
+  min-height: 58px;
+}
+#label_endereco_da_pagina_registrada{
+  color: #505050;
+  font-size: 11pt;
+}
+#span_mensagem_do_campo_endereco_da_pagina_registrada{
+  margin-top: 20px;
+  color: #F00000;
+  font-size: 11pt;
+}
+#div_campo_endereco_da_pagina_registrada{
+  margin-top: 1px;
+}
+#campo_endereco_da_pagina_registrada{
+  width: calc(100% - 2px - 10px);
 }
 
 /* Classes para qualquer tag: */
