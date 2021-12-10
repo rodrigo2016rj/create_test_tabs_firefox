@@ -36,12 +36,6 @@ body{
   line-height: 25px;
   text-indent: 40px;
 }
-#div_instrucoes>p{
-  margin-top: 12px;
-}
-#div_instrucoes>p:first-child{
-  margin-top: 0px;
-}
 #span_expandir_instrucoes{
   cursor: pointer;
 }
@@ -51,12 +45,15 @@ body{
 #div_conteudo_das_instrucoes{
   overflow: hidden;
 }
+#div_conteudo_das_instrucoes>p{
+  margin-top: 12px;
+}
 .instrucoes_encolhidas{
   max-height: 0px;
   transition: max-height 0.5s ease-out;
 }
 .instrucoes_expandidas{
-  max-height: 400px;
+  max-height: 496px;
   transition: max-height 0.5s ease-in;
 }
 #div_formulario_registrar_pagina_mais_lista_de_paginas{
@@ -68,6 +65,34 @@ body{
   padding-right: 40px;
   padding-left: 40px;
   overflow: hidden;
+}
+#div_textos_do_formulario_registrar_pagina{
+  overflow: hidden;
+}
+#div_titulo_do_formulario_registrar_pagina{
+  float: left;
+  min-width: 50%;
+  max-width: 50%;
+}
+#div_opcoes_das_paginas_registradas{
+  float: left;
+  min-width: 50%;
+  max-width: 50%;
+  text-align: right;
+  font-size: 11pt;
+}
+#link_importar,
+#link_exportar,
+#link_importar:visited,
+#link_exportar:visited{
+  color: #404080;
+  text-decoration: none;
+}
+#link_importar:hover,
+#link_exportar:hover{
+  color: #881888;
+  text-decoration: underline;
+  cursor: pointer;
 }
 #div_label_nome_da_pagina_mais_campo_nome_da_pagina{
   float: left;

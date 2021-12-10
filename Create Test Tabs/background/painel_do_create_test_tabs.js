@@ -44,104 +44,6 @@ window.addEventListener("load", function(){
     console.error("Create Test Tabs - " + erro);
   });
   
-  /* Comportamento do formulário que registra uma página */
-  var span_mensagem_do_campo_nome_da_pagina = document.getElementById("span_mensagem_do_campo_nome_da_pagina");
-  var campo_nome_da_pagina = document.getElementById("campo_nome_da_pagina");
-  var botao_registrar_pagina = document.getElementById("botao_registrar_pagina");
-  var span_mensagem_do_campo_endereco_da_pagina = document.getElementById("span_mensagem_do_campo_endereco_da_pagina");
-  var campo_endereco_da_pagina = document.getElementById("campo_endereco_da_pagina");
-  
-  var backup_do_nome_da_pagina = "";
-  var backup_do_endereco_da_pagina = "";
-  
-  campo_nome_da_pagina.addEventListener("keyup", function(){
-    if(campo_nome_da_pagina.value !== backup_do_nome_da_pagina){
-      span_mensagem_do_campo_nome_da_pagina.classList.add("tag_oculta");
-      backup_do_nome_da_pagina = campo_nome_da_pagina.value;
-    }
-  });
-  campo_endereco_da_pagina.addEventListener("keyup", function(){
-    if(campo_endereco_da_pagina.value !== backup_do_endereco_da_pagina){
-      span_mensagem_do_campo_endereco_da_pagina.classList.add("tag_oculta");
-      backup_do_endereco_da_pagina = campo_endereco_da_pagina.value;
-    }
-  });
-  
-  botao_registrar_pagina.addEventListener("click", function(){
-    span_mensagem_do_campo_nome_da_pagina.classList.add("tag_oculta");
-    span_mensagem_do_campo_endereco_da_pagina.classList.add("tag_oculta");
-    
-    var quantidade_de_campos_vazios = 0;
-    
-    var nome_da_pagina = campo_nome_da_pagina.value.trim();
-    campo_nome_da_pagina.value = nome_da_pagina;
-    if(nome_da_pagina === ""){
-      span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
-      span_mensagem_do_campo_nome_da_pagina.innerText = "Required";
-      quantidade_de_campos_vazios++;
-    }
-    
-    var endereco_da_pagina = campo_endereco_da_pagina.value.trim();
-    campo_endereco_da_pagina.value = endereco_da_pagina;
-    if(endereco_da_pagina === ""){
-      span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
-      span_mensagem_do_campo_endereco_da_pagina.innerText = "Required";
-      quantidade_de_campos_vazios++;
-    }
-    
-    if(quantidade_de_campos_vazios > 0){
-      return;
-    }
-    
-    if(paginas_registradas === null){
-      return;
-    }
-    
-    var quantidade_de_informacao_repetida = 0;
-    for(var i = 0; i < paginas_registradas.length; i++){
-      if(nome_da_pagina.toLowerCase() === paginas_registradas[i].nome.toLowerCase()){
-        span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
-        span_mensagem_do_campo_nome_da_pagina.innerText = "This name has already been registered";
-        quantidade_de_informacao_repetida++;
-      }
-      
-      if(endereco_da_pagina.toLowerCase() === paginas_registradas[i].endereco.toLowerCase()){
-        span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
-        span_mensagem_do_campo_endereco_da_pagina.innerText = "This url has already been registered";
-        quantidade_de_informacao_repetida++;
-      }
-      
-      if(quantidade_de_informacao_repetida == 2){
-        break;
-      }
-    }
-    
-    if(quantidade_de_informacao_repetida > 0){
-      return;
-    }
-    
-    if(nome_da_pagina.length > 36){
-      span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
-      span_mensagem_do_campo_nome_da_pagina.innerText = "Max length 36 chars, you typed " + nome_da_pagina.length;
-      return;
-    }
-    
-    if(endereco_da_pagina.length > 600){
-      span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
-      span_mensagem_do_campo_endereco_da_pagina.innerText = "Max length 600 chars, you typed " + endereco_da_pagina.length;
-      return;
-    }
-    
-    var pagina = {};
-    pagina.nome = nome_da_pagina;
-    pagina.endereco = endereco_da_pagina;
-    pagina.lista_de_combinacoes = Array();
-    pagina.expandir_opcoes = false;
-    paginas_registradas.push(pagina);
-    browser.storage.local.set({paginas_registradas: paginas_registradas});
-    atualizar_lista_de_paginas(paginas_registradas);
-  });
-  
   /* Comportamento dos popups */
   var popups = document.getElementsByClassName("popup");
   var div_popup = document.getElementById("div_popup");
@@ -281,6 +183,339 @@ window.addEventListener("load", function(){
       popups[i].classList.add("tag_oculta");
     }
   }
+  
+  function mostrar_popup_generico(conteudo){
+    div_popup.classList.remove("tag_oculta");
+    
+    div_texto_do_popup.innerHTML = conteudo;
+    
+    var quantidade_rolada = document.documentElement.scrollTop;
+    var altura_que_esta_sendo_visualizada = window.innerHeight;
+    var estilo_computado = window.getComputedStyle(div_popup);
+    var altura = 0;
+    altura += parseInt(estilo_computado.marginTop, 10);
+    altura += parseInt(estilo_computado.marginBottom, 10);
+    altura += parseInt(estilo_computado.borderTopWidth, 10);
+    altura += parseInt(estilo_computado.borderBottomWidth, 10);
+    altura += parseInt(estilo_computado.paddingTop, 10);
+    altura += parseInt(estilo_computado.paddingBottom, 10);
+    altura += parseInt(estilo_computado.height, 10);
+    var posicao_y = quantidade_rolada + altura_que_esta_sendo_visualizada / 2 - altura / 2;
+    div_popup.style.top = posicao_y + "px";
+  }
+  
+  /* Comportamento do link importar e do link exportar */
+  var link_importar = document.getElementById("link_importar");
+  var campo_importar = document.getElementById("campo_importar");
+  var link_exportar = document.getElementById("link_exportar");
+  
+  link_importar.addEventListener("click", function(evento){
+    evento.preventDefault();
+    campo_importar.click();
+  });
+  
+  campo_importar.addEventListener("change", function(){
+    var arquivo = campo_importar.files[0];
+    var file_reader = new FileReader();
+    file_reader.readAsText(arquivo);
+    
+    file_reader.addEventListener("load", function(){
+      var texto = file_reader.result;
+      
+      var paginas_importadas = null;
+      try{
+        paginas_importadas = JSON.parse(texto);
+      }catch(erro){
+        var conteudo = "<p>Import failed. The file does not contain json string.</p>";
+        mostrar_popup_generico(conteudo);
+        return;
+      }
+      
+      if(!Array.isArray(paginas_importadas)){
+        var conteudo = "<p>Import failed. The file does not have an array.</p>";
+        mostrar_popup_generico(conteudo);
+        return;
+      }
+      
+      for(var i = 0; i < paginas_importadas.length; i++){
+        if(paginas_importadas[i].hasOwnProperty("nome")){
+          if(typeof(paginas_importadas[i].nome) !== "string"){
+            var conteudo = "<p>Import failed. The name of page must be a string.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+          paginas_importadas[i].nome = paginas_importadas[i].nome.trim();
+          if(paginas_importadas[i].nome === ""){
+            var conteudo = "<p>Import failed. The name of page cannot be empty string.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+          for(var j = 0; j < paginas_importadas.length; j++){
+            if(j == i){
+              continue;
+            }
+            if(paginas_importadas[j].nome.toLowerCase() === paginas_importadas[i].nome.toLowerCase()){
+              var conteudo = "<p>Import failed. The name of page must be unique in the file.</p>";
+              mostrar_popup_generico(conteudo);
+              return;
+            }
+          }
+          if(paginas_importadas[i].nome.length > 36){
+            var conteudo = "<p>Import failed. The name of page cannot exceed 36 characters.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+        }else{
+          var conteudo = "<p>Import failed. Page must have the nome property.</p>";
+          mostrar_popup_generico(conteudo);
+          return;
+        }
+        if(paginas_importadas[i].hasOwnProperty("endereco")){
+          if(typeof(paginas_importadas[i].endereco) !== "string"){
+            var conteudo = "<p>Import failed. The url of page must be a string.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+          paginas_importadas[i].endereco = paginas_importadas[i].endereco.trim();
+          if(paginas_importadas[i].endereco === ""){
+            var conteudo = "<p>Import failed. The url of page cannot be empty string.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+          for(var j = 0; j < paginas_importadas.length; j++){
+            if(j == i){
+              continue;
+            }
+            if(paginas_importadas[j].endereco.toLowerCase() === paginas_importadas[i].endereco.toLowerCase()){
+              var conteudo = "<p>Import failed. The url of page must be unique in the file.</p>";
+              mostrar_popup_generico(conteudo);
+              return;
+            }
+          }
+          if(paginas_importadas[i].endereco.length > 600){
+            var conteudo = "<p>Import failed. The url of page cannot exceed 600 characters.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+        }else{
+          var conteudo = "<p>Import failed. Page must have the endereco property.</p>";
+          mostrar_popup_generico(conteudo);
+          return;
+        }
+        if(paginas_importadas[i].hasOwnProperty("lista_de_combinacoes")){
+          if(!Array.isArray(paginas_importadas[i].lista_de_combinacoes)){
+            var conteudo = "<p>Import failed.</p><p>The lista_de_combinacoes property must be an array.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+        }else{
+          var conteudo = "<p>Import failed. Page must have the lista_de_combinacoes property.</p>";
+          mostrar_popup_generico(conteudo);
+          return;
+        }
+        if(paginas_importadas[i].hasOwnProperty("expandir_opcoes")){
+          if(typeof(paginas_importadas[i].expandir_opcoes) !== "boolean"){
+            var conteudo = "<p>Import failed. The expandir_opcoes property must be a boolean.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+        }else{
+          var conteudo = "<p>Import failed. Page must have the expandir_opcoes property.</p>";
+          mostrar_popup_generico(conteudo);
+          return;
+        }
+        var lista_de_combinacoes = paginas_importadas[i].lista_de_combinacoes;
+        for(var j = 0; j < lista_de_combinacoes.length; j++){
+          if(lista_de_combinacoes[j].hasOwnProperty("lista_de_entradas_de_formulario")){
+            if(!Array.isArray(lista_de_combinacoes[j].lista_de_entradas_de_formulario)){
+              var conteudo = "<p>Import failed.</p><p>The lista_de_entradas_de_formulario property must be an array.</p>";
+              mostrar_popup_generico(conteudo);
+              return;
+            }
+          }else{
+            var conteudo = "<p>Import failed.</p><p>Form input combination must have the lista_de_entradas_de_formulario property.</p>";
+            mostrar_popup_generico(conteudo);
+            return;
+          }
+          var lista_de_entradas_de_formulario = lista_de_combinacoes[j].lista_de_entradas_de_formulario;
+          for(var k = 0; k < lista_de_entradas_de_formulario.length; k++){
+            if(lista_de_entradas_de_formulario[k].hasOwnProperty("name")){
+              if(typeof(lista_de_entradas_de_formulario[k].name) !== "string"){
+                var conteudo = "<p>Import failed. The name of form entry must be a string.</p>";
+                mostrar_popup_generico(conteudo);
+                return;
+              }
+              lista_de_entradas_de_formulario[k].name = lista_de_entradas_de_formulario[k].name.trim();
+              if(lista_de_entradas_de_formulario[k].name === ""){
+                var conteudo = "<p>Import failed. The name of form entry cannot be empty string.</p>";
+                mostrar_popup_generico(conteudo);
+                return;
+              }
+              if(lista_de_entradas_de_formulario[k].name.length > 60){
+                var conteudo = "<p>Import failed. The name of form entry cannot exceed 60 characters.</p>";
+                mostrar_popup_generico(conteudo);
+                return;
+              }
+            }else{
+              var conteudo = "<p>Import failed. Form entry must have the name property.</p>";
+              mostrar_popup_generico(conteudo);
+              return;
+            }
+            if(lista_de_entradas_de_formulario[k].hasOwnProperty("value")){
+              if(typeof(lista_de_entradas_de_formulario[k].value) !== "string"){
+                var conteudo = "<p>Import failed. The value of form entry must be a string.</p>";
+                mostrar_popup_generico(conteudo);
+                return;
+              }
+              lista_de_entradas_de_formulario[k].value = lista_de_entradas_de_formulario[k].value.trim();
+              if(lista_de_entradas_de_formulario[k].value.length > 2500){
+                var conteudo = "<p>Import failed. The value of form entry cannot exceed 2500 characters.</p>";
+                mostrar_popup_generico(conteudo);
+                return;
+              }
+            }else{
+              var conteudo = "<p>Import failed. Form entry must have the value property.</p>";
+              mostrar_popup_generico(conteudo);
+              return;
+            }
+          }
+        }
+      }
+      
+      paginas_registradas = paginas_importadas;
+      browser.storage.local.set({paginas_registradas: paginas_registradas});
+      atualizar_lista_de_paginas(paginas_registradas);
+    });
+  });
+  
+  link_exportar.addEventListener("click", function(evento){
+    if(paginas_registradas === null){
+      return;
+    }
+    
+    var conteudo = encodeURIComponent(JSON.stringify(paginas_registradas));
+    link_exportar.setAttribute("href", "data:text/plain;charset=utf-8," + conteudo);
+    
+    var data_atual = new Date();
+    var ano = data_atual.getFullYear();
+    var mes = data_atual.getMonth() + 1;
+    if(mes < 10){
+      mes = "0" + mes;
+    }
+    var dia = data_atual.getDate();
+    if(dia < 10){
+      dia = "0" + dia;
+    }
+    var horas = data_atual.getHours();
+    if(horas < 10){
+      horas = "0" + horas;
+    }
+    var minutos = data_atual.getMinutes();
+    if(minutos < 10){
+      minutos = "0" + minutos;
+    }
+    var momento = ano + "-" + mes + "-" + dia + " " + horas + "h" + minutos;
+    var nome = "Create Test Tabs - Backup - " + momento + ".txt";
+    link_exportar.setAttribute("download", nome);
+  });
+  
+  /* Comportamento do formulário que registra uma página */
+  var span_mensagem_do_campo_nome_da_pagina = document.getElementById("span_mensagem_do_campo_nome_da_pagina");
+  var campo_nome_da_pagina = document.getElementById("campo_nome_da_pagina");
+  var botao_registrar_pagina = document.getElementById("botao_registrar_pagina");
+  var span_mensagem_do_campo_endereco_da_pagina = document.getElementById("span_mensagem_do_campo_endereco_da_pagina");
+  var campo_endereco_da_pagina = document.getElementById("campo_endereco_da_pagina");
+  
+  var backup_do_nome_da_pagina = "";
+  var backup_do_endereco_da_pagina = "";
+  
+  campo_nome_da_pagina.addEventListener("keyup", function(){
+    if(campo_nome_da_pagina.value !== backup_do_nome_da_pagina){
+      span_mensagem_do_campo_nome_da_pagina.classList.add("tag_oculta");
+      backup_do_nome_da_pagina = campo_nome_da_pagina.value;
+    }
+  });
+  campo_endereco_da_pagina.addEventListener("keyup", function(){
+    if(campo_endereco_da_pagina.value !== backup_do_endereco_da_pagina){
+      span_mensagem_do_campo_endereco_da_pagina.classList.add("tag_oculta");
+      backup_do_endereco_da_pagina = campo_endereco_da_pagina.value;
+    }
+  });
+  
+  botao_registrar_pagina.addEventListener("click", function(){
+    span_mensagem_do_campo_nome_da_pagina.classList.add("tag_oculta");
+    span_mensagem_do_campo_endereco_da_pagina.classList.add("tag_oculta");
+    
+    var quantidade_de_campos_vazios = 0;
+    
+    var nome_da_pagina = campo_nome_da_pagina.value.trim();
+    campo_nome_da_pagina.value = nome_da_pagina;
+    if(nome_da_pagina === ""){
+      span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
+      span_mensagem_do_campo_nome_da_pagina.innerText = "Required";
+      quantidade_de_campos_vazios++;
+    }
+    
+    var endereco_da_pagina = campo_endereco_da_pagina.value.trim();
+    campo_endereco_da_pagina.value = endereco_da_pagina;
+    if(endereco_da_pagina === ""){
+      span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
+      span_mensagem_do_campo_endereco_da_pagina.innerText = "Required";
+      quantidade_de_campos_vazios++;
+    }
+    
+    if(quantidade_de_campos_vazios > 0){
+      return;
+    }
+    
+    if(paginas_registradas === null){
+      return;
+    }
+    
+    var quantidade_de_informacao_repetida = 0;
+    for(var i = 0; i < paginas_registradas.length; i++){
+      if(nome_da_pagina.toLowerCase() === paginas_registradas[i].nome.toLowerCase()){
+        span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
+        span_mensagem_do_campo_nome_da_pagina.innerText = "This name has already been registered";
+        quantidade_de_informacao_repetida++;
+      }
+      
+      if(endereco_da_pagina.toLowerCase() === paginas_registradas[i].endereco.toLowerCase()){
+        span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
+        span_mensagem_do_campo_endereco_da_pagina.innerText = "This url has already been registered";
+        quantidade_de_informacao_repetida++;
+      }
+      
+      if(quantidade_de_informacao_repetida == 2){
+        break;
+      }
+    }
+    
+    if(quantidade_de_informacao_repetida > 0){
+      return;
+    }
+    
+    if(nome_da_pagina.length > 36){
+      span_mensagem_do_campo_nome_da_pagina.classList.remove("tag_oculta");
+      span_mensagem_do_campo_nome_da_pagina.innerText = "Max length 36 chars, you typed " + nome_da_pagina.length;
+      return;
+    }
+    
+    if(endereco_da_pagina.length > 600){
+      span_mensagem_do_campo_endereco_da_pagina.classList.remove("tag_oculta");
+      span_mensagem_do_campo_endereco_da_pagina.innerText = "Max length 600 chars, you typed " + endereco_da_pagina.length;
+      return;
+    }
+    
+    var pagina = {};
+    pagina.nome = nome_da_pagina;
+    pagina.endereco = endereco_da_pagina;
+    pagina.lista_de_combinacoes = Array();
+    pagina.expandir_opcoes = false;
+    paginas_registradas.push(pagina);
+    browser.storage.local.set({paginas_registradas: paginas_registradas});
+    atualizar_lista_de_paginas(paginas_registradas);
+  });
   
   /* Comportamento da lista de páginas registradas */
   var div_modelo_pagina_registrada = document.getElementById("div_modelo_pagina_registrada");
@@ -459,23 +694,8 @@ window.addEventListener("load", function(){
     var pagina_registrada = paginas_registradas[posicao_no_array];
     var lista_de_combinacoes = pagina_registrada.lista_de_combinacoes;
     if(lista_de_combinacoes.length < 1){
-      div_popup.classList.remove("tag_oculta");
-      
-      div_texto_do_popup.innerHTML = "<p>In the options below, create new form input combinations first and then create test tabs.</p>";
-      
-      var quantidade_rolada = document.documentElement.scrollTop;
-      var altura_que_esta_sendo_visualizada = window.innerHeight;
-      var estilo_computado = window.getComputedStyle(div_popup);
-      var altura = 0;
-      altura += parseInt(estilo_computado.marginTop, 10);
-      altura += parseInt(estilo_computado.marginBottom, 10);
-      altura += parseInt(estilo_computado.borderTopWidth, 10);
-      altura += parseInt(estilo_computado.borderBottomWidth, 10);
-      altura += parseInt(estilo_computado.paddingTop, 10);
-      altura += parseInt(estilo_computado.paddingBottom, 10);
-      altura += parseInt(estilo_computado.height, 10);
-      var posicao_y = quantidade_rolada + altura_que_esta_sendo_visualizada / 2 - altura / 2;
-      div_popup.style.top = posicao_y + "px";
+      var conteudo = "<p>In the options below, create new form input combinations first and then create test tabs.</p>";
+      mostrar_popup_generico(conteudo);
       return;
     }
     
@@ -497,7 +717,7 @@ window.addEventListener("load", function(){
           browser.tabs.sendMessage(id_da_aba, array_mensagens_das_abas[i]).then(function(objeto_resposta){
             array_ids_das_abas_que_ja_receberam.push(objeto_resposta.id_da_aba);
           }).catch(function(erro){
-            div_popup.classList.remove("tag_oculta");
+            var conteudo = "";
             
             if(aba.url.indexOf("http://localhost/") != 0
                && aba.url.indexOf("https://localhost/") != 0
@@ -505,38 +725,26 @@ window.addEventListener("load", function(){
                && aba.url.indexOf("https://127.0.0.1/") != 0
                && aba.url.indexOf("http://[::1]/") != 0
                && aba.url.indexOf("https://[::1]/") != 0){
-              div_texto_do_popup.innerHTML = "<p>One or more tabs did not receive the form entries filled in, because do not start with one of the strings:</p>";
-              div_texto_do_popup.innerHTML += "<p>http://localhost/</p>";
-              div_texto_do_popup.innerHTML += "<p>https://localhost/</p>";
-              div_texto_do_popup.innerHTML += "<p>http://127.0.0.1/</p>";
-              div_texto_do_popup.innerHTML += "<p>https://127.0.0.1/</p>";
-              div_texto_do_popup.innerHTML += "<p>http://[::1]/</p>";
-              div_texto_do_popup.innerHTML += "<p>https://[::1]/</p>";
+              conteudo = "<p>One or more tabs did not receive the form entries filled in, because do not start with one of the strings:</p>";
+              conteudo += "<p>http://localhost/</p>";
+              conteudo += "<p>https://localhost/</p>";
+              conteudo += "<p>http://127.0.0.1/</p>";
+              conteudo += "<p>https://127.0.0.1/</p>";
+              conteudo += "<p>http://[::1]/</p>";
+              conteudo += "<p>https://[::1]/</p>";
             }else{
               console.error("Create Test Tabs - " + erro);
               if(tentativa_com_disparo_de_evento_update > 5){
                 return;
               }
               tentativa_com_disparo_de_evento_update++;
-              div_texto_do_popup.innerHTML = "<p>For some reason, one or more tabs did not receive the form entries filled. To solve, this addon's script fired an update event for them.</p>";
+              conteudo = "<p>For some reason, one or more tabs did not receive the form entries filled. To solve, this addon's script fired an update event for them.</p>";
               browser.tabs.update(id_da_aba, {url: endereco_alvo}).catch(function(erro){
                 console.error("Create Test Tabs - " + erro);
               });
             }
             
-            var quantidade_rolada = document.documentElement.scrollTop;
-            var altura_que_esta_sendo_visualizada = window.innerHeight;
-            var estilo_computado = window.getComputedStyle(div_popup);
-            var altura = 0;
-            altura += parseInt(estilo_computado.marginTop, 10);
-            altura += parseInt(estilo_computado.marginBottom, 10);
-            altura += parseInt(estilo_computado.borderTopWidth, 10);
-            altura += parseInt(estilo_computado.borderBottomWidth, 10);
-            altura += parseInt(estilo_computado.paddingTop, 10);
-            altura += parseInt(estilo_computado.paddingBottom, 10);
-            altura += parseInt(estilo_computado.height, 10);
-            var posicao_y = quantidade_rolada + altura_que_esta_sendo_visualizada / 2 - altura / 2;
-            div_popup.style.top = posicao_y + "px";
+            mostrar_popup_generico(conteudo);
           });
           return;
         }
