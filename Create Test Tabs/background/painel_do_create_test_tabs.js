@@ -184,10 +184,8 @@ window.addEventListener("load", function(){
     }
   }
   
-  function mostrar_popup_generico(conteudo){
+  function mostrar_popup_generico(){
     div_popup.classList.remove("tag_oculta");
-    
-    div_texto_do_popup.innerHTML = conteudo;
     
     var quantidade_rolada = document.documentElement.scrollTop;
     var altura_que_esta_sendo_visualizada = window.innerHeight;
@@ -226,28 +224,28 @@ window.addEventListener("load", function(){
       try{
         paginas_importadas = JSON.parse(texto);
       }catch(erro){
-        var conteudo = "<p>Import failed. The file does not contain json string.</p>";
-        mostrar_popup_generico(conteudo);
+        div_texto_do_popup.innerHTML = "<p>Import failed. The file does not contain json string.</p>";
+        mostrar_popup_generico();
         return;
       }
       
       if(!Array.isArray(paginas_importadas)){
-        var conteudo = "<p>Import failed. The file does not have an array.</p>";
-        mostrar_popup_generico(conteudo);
+        div_texto_do_popup.innerHTML = "<p>Import failed. The file does not have an array.</p>";
+        mostrar_popup_generico();
         return;
       }
       
       for(var i = 0; i < paginas_importadas.length; i++){
         if(paginas_importadas[i].hasOwnProperty("nome")){
           if(typeof(paginas_importadas[i].nome) !== "string"){
-            var conteudo = "<p>Import failed. The name of page must be a string.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The name of page must be a string.</p>";
+            mostrar_popup_generico();
             return;
           }
           paginas_importadas[i].nome = paginas_importadas[i].nome.trim();
           if(paginas_importadas[i].nome === ""){
-            var conteudo = "<p>Import failed. The name of page cannot be empty string.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The name of page cannot be empty string.</p>";
+            mostrar_popup_generico();
             return;
           }
           for(var j = 0; j < paginas_importadas.length; j++){
@@ -255,31 +253,31 @@ window.addEventListener("load", function(){
               continue;
             }
             if(paginas_importadas[j].nome.toLowerCase() === paginas_importadas[i].nome.toLowerCase()){
-              var conteudo = "<p>Import failed. The name of page must be unique in the file.</p>";
-              mostrar_popup_generico(conteudo);
+              div_texto_do_popup.innerHTML = "<p>Import failed. The name of page must be unique in the file.</p>";
+              mostrar_popup_generico();
               return;
             }
           }
           if(paginas_importadas[i].nome.length > 36){
-            var conteudo = "<p>Import failed. The name of page cannot exceed 36 characters.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The name of page cannot exceed 36 characters.</p>";
+            mostrar_popup_generico();
             return;
           }
         }else{
-          var conteudo = "<p>Import failed. Page must have the nome property.</p>";
-          mostrar_popup_generico(conteudo);
+          div_texto_do_popup.innerHTML = "<p>Import failed. Page must have the nome property.</p>";
+          mostrar_popup_generico();
           return;
         }
         if(paginas_importadas[i].hasOwnProperty("endereco")){
           if(typeof(paginas_importadas[i].endereco) !== "string"){
-            var conteudo = "<p>Import failed. The url of page must be a string.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The url of page must be a string.</p>";
+            mostrar_popup_generico();
             return;
           }
           paginas_importadas[i].endereco = paginas_importadas[i].endereco.trim();
           if(paginas_importadas[i].endereco === ""){
-            var conteudo = "<p>Import failed. The url of page cannot be empty string.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The url of page cannot be empty string.</p>";
+            mostrar_popup_generico();
             return;
           }
           for(var j = 0; j < paginas_importadas.length; j++){
@@ -287,95 +285,95 @@ window.addEventListener("load", function(){
               continue;
             }
             if(paginas_importadas[j].endereco.toLowerCase() === paginas_importadas[i].endereco.toLowerCase()){
-              var conteudo = "<p>Import failed. The url of page must be unique in the file.</p>";
-              mostrar_popup_generico(conteudo);
+              div_texto_do_popup.innerHTML = "<p>Import failed. The url of page must be unique in the file.</p>";
+              mostrar_popup_generico();
               return;
             }
           }
           if(paginas_importadas[i].endereco.length > 600){
-            var conteudo = "<p>Import failed. The url of page cannot exceed 600 characters.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The url of page cannot exceed 600 characters.</p>";
+            mostrar_popup_generico();
             return;
           }
         }else{
-          var conteudo = "<p>Import failed. Page must have the endereco property.</p>";
-          mostrar_popup_generico(conteudo);
+          div_texto_do_popup.innerHTML = "<p>Import failed. Page must have the endereco property.</p>";
+          mostrar_popup_generico();
           return;
         }
         if(paginas_importadas[i].hasOwnProperty("lista_de_combinacoes")){
           if(!Array.isArray(paginas_importadas[i].lista_de_combinacoes)){
-            var conteudo = "<p>Import failed.</p><p>The lista_de_combinacoes property must be an array.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed.</p><p>The lista_de_combinacoes property must be an array.</p>";
+            mostrar_popup_generico();
             return;
           }
         }else{
-          var conteudo = "<p>Import failed. Page must have the lista_de_combinacoes property.</p>";
-          mostrar_popup_generico(conteudo);
+          div_texto_do_popup.innerHTML = "<p>Import failed. Page must have the lista_de_combinacoes property.</p>";
+          mostrar_popup_generico();
           return;
         }
         if(paginas_importadas[i].hasOwnProperty("expandir_opcoes")){
           if(typeof(paginas_importadas[i].expandir_opcoes) !== "boolean"){
-            var conteudo = "<p>Import failed. The expandir_opcoes property must be a boolean.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed. The expandir_opcoes property must be a boolean.</p>";
+            mostrar_popup_generico();
             return;
           }
         }else{
-          var conteudo = "<p>Import failed. Page must have the expandir_opcoes property.</p>";
-          mostrar_popup_generico(conteudo);
+          div_texto_do_popup.innerHTML = "<p>Import failed. Page must have the expandir_opcoes property.</p>";
+          mostrar_popup_generico();
           return;
         }
         var lista_de_combinacoes = paginas_importadas[i].lista_de_combinacoes;
         for(var j = 0; j < lista_de_combinacoes.length; j++){
           if(lista_de_combinacoes[j].hasOwnProperty("lista_de_entradas_de_formulario")){
             if(!Array.isArray(lista_de_combinacoes[j].lista_de_entradas_de_formulario)){
-              var conteudo = "<p>Import failed.</p><p>The lista_de_entradas_de_formulario property must be an array.</p>";
-              mostrar_popup_generico(conteudo);
+              div_texto_do_popup.innerHTML = "<p>Import failed.</p><p>The lista_de_entradas_de_formulario property must be an array.</p>";
+              mostrar_popup_generico();
               return;
             }
           }else{
-            var conteudo = "<p>Import failed.</p><p>Form input combination must have the lista_de_entradas_de_formulario property.</p>";
-            mostrar_popup_generico(conteudo);
+            div_texto_do_popup.innerHTML = "<p>Import failed.</p><p>Form input combination must have the lista_de_entradas_de_formulario property.</p>";
+            mostrar_popup_generico();
             return;
           }
           var lista_de_entradas_de_formulario = lista_de_combinacoes[j].lista_de_entradas_de_formulario;
           for(var k = 0; k < lista_de_entradas_de_formulario.length; k++){
             if(lista_de_entradas_de_formulario[k].hasOwnProperty("name")){
               if(typeof(lista_de_entradas_de_formulario[k].name) !== "string"){
-                var conteudo = "<p>Import failed. The name of form entry must be a string.</p>";
-                mostrar_popup_generico(conteudo);
+                div_texto_do_popup.innerHTML = "<p>Import failed. The name of form entry must be a string.</p>";
+                mostrar_popup_generico();
                 return;
               }
               lista_de_entradas_de_formulario[k].name = lista_de_entradas_de_formulario[k].name.trim();
               if(lista_de_entradas_de_formulario[k].name === ""){
-                var conteudo = "<p>Import failed. The name of form entry cannot be empty string.</p>";
-                mostrar_popup_generico(conteudo);
+                div_texto_do_popup.innerHTML = "<p>Import failed. The name of form entry cannot be empty string.</p>";
+                mostrar_popup_generico();
                 return;
               }
               if(lista_de_entradas_de_formulario[k].name.length > 60){
-                var conteudo = "<p>Import failed. The name of form entry cannot exceed 60 characters.</p>";
-                mostrar_popup_generico(conteudo);
+                div_texto_do_popup.innerHTML = "<p>Import failed. The name of form entry cannot exceed 60 characters.</p>";
+                mostrar_popup_generico();
                 return;
               }
             }else{
-              var conteudo = "<p>Import failed. Form entry must have the name property.</p>";
-              mostrar_popup_generico(conteudo);
+              div_texto_do_popup.innerHTML = "<p>Import failed. Form entry must have the name property.</p>";
+              mostrar_popup_generico();
               return;
             }
             if(lista_de_entradas_de_formulario[k].hasOwnProperty("value")){
               if(typeof(lista_de_entradas_de_formulario[k].value) !== "string"){
-                var conteudo = "<p>Import failed. The value of form entry must be a string.</p>";
-                mostrar_popup_generico(conteudo);
+                div_texto_do_popup.innerHTML = "<p>Import failed. The value of form entry must be a string.</p>";
+                mostrar_popup_generico();
                 return;
               }
               lista_de_entradas_de_formulario[k].value = lista_de_entradas_de_formulario[k].value.trim();
               if(lista_de_entradas_de_formulario[k].value.length > 2500){
-                var conteudo = "<p>Import failed. The value of form entry cannot exceed 2500 characters.</p>";
-                mostrar_popup_generico(conteudo);
+                div_texto_do_popup.innerHTML = "<p>Import failed. The value of form entry cannot exceed 2500 characters.</p>";
+                mostrar_popup_generico();
                 return;
               }
             }else{
-              var conteudo = "<p>Import failed. Form entry must have the value property.</p>";
-              mostrar_popup_generico(conteudo);
+              div_texto_do_popup.innerHTML = "<p>Import failed. Form entry must have the value property.</p>";
+              mostrar_popup_generico();
               return;
             }
           }
@@ -694,8 +692,8 @@ window.addEventListener("load", function(){
     var pagina_registrada = paginas_registradas[posicao_no_array];
     var lista_de_combinacoes = pagina_registrada.lista_de_combinacoes;
     if(lista_de_combinacoes.length < 1){
-      var conteudo = "<p>In the options below, create new form input combinations first and then create test tabs.</p>";
-      mostrar_popup_generico(conteudo);
+      div_texto_do_popup.innerHTML = "<p>In the options below, create new form input combinations first and then create test tabs.</p>";
+      mostrar_popup_generico();
       return;
     }
     
@@ -717,34 +715,32 @@ window.addEventListener("load", function(){
           browser.tabs.sendMessage(id_da_aba, array_mensagens_das_abas[i]).then(function(objeto_resposta){
             array_ids_das_abas_que_ja_receberam.push(objeto_resposta.id_da_aba);
           }).catch(function(erro){
-            var conteudo = "";
-            
             if(aba.url.indexOf("http://localhost/") != 0
                && aba.url.indexOf("https://localhost/") != 0
                && aba.url.indexOf("http://127.0.0.1/") != 0
                && aba.url.indexOf("https://127.0.0.1/") != 0
                && aba.url.indexOf("http://[::1]/") != 0
                && aba.url.indexOf("https://[::1]/") != 0){
-              conteudo = "<p>One or more tabs did not receive the form entries filled in, because do not start with one of the strings:</p>";
-              conteudo += "<p>http://localhost/</p>";
-              conteudo += "<p>https://localhost/</p>";
-              conteudo += "<p>http://127.0.0.1/</p>";
-              conteudo += "<p>https://127.0.0.1/</p>";
-              conteudo += "<p>http://[::1]/</p>";
-              conteudo += "<p>https://[::1]/</p>";
+              div_texto_do_popup.innerHTML = "<p>One or more tabs did not receive the form entries filled in, because do not start with one of the strings:</p>";
+              div_texto_do_popup.innerHTML += "<p>http://localhost/</p>";
+              div_texto_do_popup.innerHTML += "<p>https://localhost/</p>";
+              div_texto_do_popup.innerHTML += "<p>http://127.0.0.1/</p>";
+              div_texto_do_popup.innerHTML += "<p>https://127.0.0.1/</p>";
+              div_texto_do_popup.innerHTML += "<p>http://[::1]/</p>";
+              div_texto_do_popup.innerHTML += "<p>https://[::1]/</p>";
             }else{
               console.error("Create Test Tabs - " + erro);
               if(tentativa_com_disparo_de_evento_update > 5){
                 return;
               }
               tentativa_com_disparo_de_evento_update++;
-              conteudo = "<p>For some reason, one or more tabs did not receive the form entries filled. To solve, this addon's script fired an update event for them.</p>";
+              div_texto_do_popup.innerHTML = "<p>For some reason, one or more tabs did not receive the form entries filled. To solve, this addon's script fired an update event for them.</p>";
               browser.tabs.update(id_da_aba, {url: endereco_alvo}).catch(function(erro){
                 console.error("Create Test Tabs - " + erro);
               });
             }
             
-            mostrar_popup_generico(conteudo);
+            mostrar_popup_generico();
           });
           return;
         }
