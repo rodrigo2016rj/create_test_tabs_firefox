@@ -7,27 +7,34 @@ browser.runtime.onMessage.addListener(function(objeto_mensagem){
     }
     
     var nome_da_tag = campo.tagName.toLowerCase();
-    if(nome_da_tag === "select"){
-      campo.value = campos[i].value;
-      campo.dispatchEvent(new Event("change"));
-    }else if(nome_da_tag === "input"){
-      var tipo_do_input = campo.getAttribute("type");
-      switch(tipo_do_input){
-        case "radio":
-          var botao_de_radio = document.querySelector("input[name='" + campos[i].name + "'][value='" + campos[i].value + "']");
-          if(botao_de_radio === null){
-            continue;
-          }
-          botao_de_radio.click();
-        break;
-        case "checkbox":
-          campo.click();
-        break;
-        default:
-          campo.value = campos[i].value;
-          campo.dispatchEvent(new Event("input"));
-        break;
-      }
+    switch(nome_da_tag){
+      case "select":
+        campo.value = campos[i].value;
+        campo.dispatchEvent(new Event("change"));
+      break;
+      case "input":
+        var tipo_do_input = campo.getAttribute("type");
+        switch(tipo_do_input){
+          case "radio":
+            var botao_de_radio = document.querySelector("input[name='" + campos[i].name + "'][value='" + campos[i].value + "']");
+            if(botao_de_radio === null){
+              continue;
+            }
+            botao_de_radio.click();
+          break;
+          case "checkbox":
+            campo.click();
+          break;
+          default:
+            campo.value = campos[i].value;
+            campo.dispatchEvent(new Event("input"));
+          break;
+        }
+      break;
+      case "textarea":
+        campo.value = campos[i].value;
+        campo.dispatchEvent(new Event("input"));
+      break;
     }
   }
   
