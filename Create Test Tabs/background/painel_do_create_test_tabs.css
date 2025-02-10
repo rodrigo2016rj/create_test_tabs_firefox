@@ -182,9 +182,14 @@ body{
   float: left;
 }
 .botao_remover_pagina{
+  box-sizing: content-box;
   border: 1px solid #C04848;
+  padding: 0px;
+  min-width: calc(72px - 2px);
+  max-width: calc(72px - 2px);
   background-color: #C04848;
   color: #FFF;
+  letter-spacing: 1px;
 }
 .botao_remover_pagina:hover{
   border: 1px solid #B03838;
@@ -233,6 +238,7 @@ body{
   max-width: 100%;
   background-color: #F8F4E8;
   color: #6060A0;
+  letter-spacing: 0.5px;
 }
 .botao_expandir_opcoes_da_pagina:hover{
   border: none;
@@ -254,6 +260,7 @@ body{
   border: 1px solid #6060A0;
   background-color: #F8F4E8;
   color: #6060A0;
+  letter-spacing: 0.5px;
 }
 .botao_editar_pagina:hover{
   border: 1px solid #404080;
@@ -264,6 +271,7 @@ body{
   border: 1px solid #6060A0;
   background-color: #F8F4E8;
   color: #6060A0;
+  letter-spacing: 0.5px;
 }
 .botao_criar_combinacao:hover{
   border: 1px solid #404080;
@@ -311,6 +319,7 @@ body{
   line-height: calc(19px - 2px);
   background-color: #D04040;
   color: #FFF;
+  letter-spacing: 0.5px;
 }
 .botao_remover_combinacao:hover{
   border: 1px solid #B02020;
@@ -366,7 +375,11 @@ body{
   max-height: calc(55px - 19px);
 }
 .botao_adicionar_name_e_value{
+  box-sizing: content-box;
   border: 1px solid #9090B0;
+  padding: 0px 8px;
+  min-width: calc(43px - 2px - 16px);
+  max-width: calc(43px - 2px - 16px);
   background-color: #FDFDFD;
   color: #6060A0;
 }
@@ -576,7 +589,7 @@ button{
   line-height: calc(36px - 2px);
   background-color: #FFF;
   color: #8080A0;
-  font-family: Tahoma, Verdana, Times New Roman, serif;
+  font-family: Tahoma, Times New Roman, serif;
   font-size: 11pt;
   cursor: pointer;
 }

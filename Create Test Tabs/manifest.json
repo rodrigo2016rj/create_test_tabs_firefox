@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Create Test Tabs",
   "author": "Rodrigo Diniz da Silva",
-  "version": "2024.1",
+  "version": "2025.1",
   
   "homepage_url": "https://github.com/rodrigo2016rj/create_test_tabs_firefox",
   "description": "This addon allows you to register pages with forms from your project, form input combinations for each page and name and value pairs for each combination. After registering a page with one or more combinations of form inputs, you can click the Create Test Tabs button and your browser will create a tab for each combination. Each tab opened in your browser in this way will appear with the form filled in with the respective name and value pairs of the combination. So, just submit each form and check if the result found is the expected result. This addon is recommended for developers who need to run the same tests several times on each form page of the web project they are developing.",
